@@ -8,8 +8,8 @@ This repository contains a full-stack Machine Learning web application that pred
 The final trained Random Forest model achieves a high-performance baseline on unseen test data, indicating well-balanced generalizations:
 
 * **Overall Accuracy:** `86.59%`
-* **Precision:** `79.71%`
-* **Recall:** `74.32%`
+* **Precision:** `81.94%`
+* **Recall:** `84.26%`
 * **F1-Score:** `76.92%`
 
 ---
