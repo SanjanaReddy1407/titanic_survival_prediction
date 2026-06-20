@@ -10,7 +10,7 @@ The final trained Random Forest model achieves a high-performance baseline on un
 * **Overall Accuracy:** `86.59%`
 * **Precision:** `81.94%`
 * **Recall:** `84.26%`
-* **F1-Score:** `76.92%`
+* **F1-Score:** `83.09%`
 
 ---
 
