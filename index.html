@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Titanic Survival Predictor</title>
+    <style>
+    /* CSS: Premium Animated Theme */
+    body {
+        font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+        margin: 0;
+        padding: 40px 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        box-sizing: border-box;
+    }
+
+    /* Smooth Fade-In and Slide-Up Entry for the Card */
+    .container {
+        background-color: lightblue;
+        padding: 40px;
+        border-radius: 16px;
+        box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+        width: 100%;
+        max-width: 480px;
+        animation: cardEntrance 0.8s ease-out forwards;
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    @keyframes cardEntrance {
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    h2 {
+        margin-top: 0;
+        color: #2c3e50;
+        text-align: center;
+        font-size: 26px;
+        letter-spacing: -0.5px;
+        border-bottom: 2px solid #f2f4f7;
+        padding-bottom: 15px;
+        margin-bottom: 25px;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 600;
+        color: #34495e;
+        font-size: 14px;
+        transition: color 0.3s;
+    }
+
+    /* Subtle zoom and focus animation on inputs */
+    input, select {
+        width: 100%;
+        padding: 12px;
+        border: 2px solid #e2e8f0;
+        border-radius: 8px;
+        box-sizing: border-box;
+        font-size: 14px;
+        color: #2d3748;
+        background-color: #fff;
+        transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
+
+    input:focus, select:focus {
+        border-color: #3498db;
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+        transform: translateY(-1px);
+    }
+
+    /* Interactive Animated Button */
+    button {
+        width: 100%;
+        padding: 14px;
+        background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        box-shadow: 0 4px 6px rgba(52, 152, 219, 0.2);
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    button:hover {
+        background: linear-gradient(135deg, #2980b9 0%, #21618c 100%);
+        box-shadow: 0 6px 12px rgba(52, 152, 219, 0.3);
+        transform: translateY(-2px);
+    }
+
+    button:active {
+        transform: translateY(0);
+    }
+
+    /* Dynamic Popup Animation for Results */
+    .result-box {
+        margin-top: 25px;
+        padding: 18px;
+        border-radius: 8px;
+        text-align: center;
+        font-size: 18px;
+        font-weight: bold;
+        display: none;
+        transform: scale(0.9);
+        opacity: 0;
+        animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    }
+
+    @keyframes popIn {
+        to {
+            transform: scale(1);
+            opacity: 1;
+        }
+    }
+
+    .survived {
+        background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+        color: #155724;
+        border: 1px solid #c3e6cb;
+        box-shadow: 0 4px 10px rgba(21, 87, 36, 0.1);
+    }
+
+    .died {
+        background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%);
+        color: #721c24;
+        border: 1px solid #f5c6cb;
+        box-shadow: 0 4px 10px rgba(114, 28, 36, 0.1);
+    }
+</style>
+</head>
+<body>
+
+<div class="container">
+    
+    <h2>Titanic Survival Predictor</h2>
+    
+    <form id="predictorForm">
+        <div class="form-group">
+            <label for="pclass">Ticket Class:</label>
+            <select id="pclass" required>
+                <option value="1">1st Class (Upper)</option>
+                <option value="2">2nd Class (Middle)</option>
+                <option value="3">3rd Class (Lower)</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="sex">Gender:</label>
+            <select id="sex" required>
+                <option value="0">Male</option>
+                <option value="1">Female</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="age">Age:</label>
+            <input type="number" id="age" min="0" max="100" placeholder="e.g. 25" required>
+        </div>
+
+        <div class="form-group">
+            <label for="family">Family Members Aboard:</label>
+            <input type="number" id="family" min="1" max="20" placeholder="Count includes you (e.g. 1 if solo)" required>
+        </div>
+
+        <div class="form-group">
+            <label for="fare">Ticket Fare (Price paid):</label>
+            <input type="number" id="fare" step="0.01" placeholder="e.g. 32.50" required>
+        </div>
+
+        <div class="form-group">
+            <label for="embarked">Port of Boarding:</label>
+            <select id="embarked" required>
+                <option value="1">Southampton (S)</option>
+                <option value="2">Cherbourg (C)</option>
+                <option value="3">Queenstown (Q)</option>
+            </select>
+        </div>
+
+        <button type="submit">Predict Survival Chance</button>
+    </form>
+
+    <div id="result" class="result-box"></div>
+</div>
+
+<script>
+    // JS: Handles form submission asynchronously without reloading the page
+    document.getElementById('predictorForm').addEventListener('submit', function(e) {
+        e.preventDefault(); // Stop standard browser form submission redirect
+
+        // Collect individual values from fields
+        const payload = {
+            pclass: document.getElementById('pclass').value,
+            sex: document.getElementById('sex').value,
+            age: document.getElementById('age').value,
+            family: document.getElementById('family').value,
+            fare: document.getElementById('fare').value,
+            embarked: document.getElementById('embarked').value
+        };
+
+        const resultBox = document.getElementById('result');
+
+        // Post JSON packet out to Flask /predict endpoint URL
+        fetch('/predict', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        })
+        .then(response => response.json())
+        .then(data => {
+            if(data.success) {
+                resultBox.style.display = 'block';
+                
+                if(data.prediction === 1) {
+                    resultBox.className = 'result-box survived';
+                    resultBox.innerHTML = '🎉 Result: Passenger Survived!';
+                } else {
+                    resultBox.className = 'result-box died';
+                    resultBox.innerHTML = '❌ Result: Passenger Perished.';
+                }
+            } else {
+                alert('Server Error: ' + data.error);
+            }
+        })
+        .catch(err => {
+            console.error('Fetch operation failed:', err);
+        });
+    });
+</script>
+
+</body>
+</html>
